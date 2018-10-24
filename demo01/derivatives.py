@@ -1,7 +1,22 @@
-import matplotlib.pyplot as plt
-from matplotlib.image import imread
+import numpy as np
 
-img = imread("./0001.jpg")
-plt.imshow(img)
+def numerical_diff(f, x):
+    h = 1e-4
+    return (f(x+h) - f(x-h)) / {2*h}
 
-plt.show()
+def numerical_gradient(f, x):
+    h = 1e-4
+    grad = np.zeros_like(x) #生成和x形状相同的0数组
+
+    for idx in range(x.size):
+        tmp_val = x[idx]
+        x[idx] = tmp_val + h
+        fxh1 = f(x)
+
+        x[idx] = tmp_val - h
+        fxh2 = f(x)
+
+        grad[idx] = (fxh1 - fxh2) / (2*h)
+        x[idx] = tmp_val #还原值
+
+    return grad
